@@ -1,0 +1,9 @@
+{
+	"name": "adf-prabjyot",
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "1eabbf0b-7e28-4daa-8514-0140c982e8f0",
+		"tenantId": "130631d8-b75b-416a-bc89-b53f42057921"
+	}
+}
