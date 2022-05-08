@@ -140,7 +140,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT \n'@{pipeline().DataFactory}' AS DataFactory Name,\n'@{pipeline().Pipeline}' AS Pipeline Name,\n'@{pipeline().RunId}' AS RunId,\n'@{activity('Copy data1').output.value}' AS FileName,\n'@{activity('Copy data1').output[0].Error.Message}' AS ErrorMessage",
+							"value": "SELECT \n'@{pipeline().DataFactory}',\n'@{pipeline().Pipeline}',\n'@{pipeline().RunId}',\n'@{activity('Copy data1').output.errors[0].Message}',\n'@{activity('Copy data1').output.executionDetails[0].status}',\n'@{utcNow()}'",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -148,64 +148,8 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "AzureSqlLogTable",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "AzureSqlLogTable",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "Copy data3",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "ForEach1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": {
-							"value": "SELECT \n'@{pipeline().DataFactory}' AS DataFactory Name,\n'@{pipeline().Pipeline}' AS Pipeline Name,\n'@{pipeline().RunId}' AS RunId,\n'@{activity('Copy data1').output.value}' AS FileName,\n'Success' AS ErrorMessage",
-							"type": "Expression"
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"tableOption": "autoCreate",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
