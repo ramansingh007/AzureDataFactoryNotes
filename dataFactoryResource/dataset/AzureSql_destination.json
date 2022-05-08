@@ -5,40 +5,19 @@
 			"referenceName": "AzureSqlDB_Datasets",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [
-			{
-				"name": "id",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "Name",
-				"type": "varchar"
-			},
-			{
-				"name": "Salary",
-				"type": "int",
-				"precision": 10
-			},
-			{
-				"name": "DOB",
-				"type": "date"
-			},
-			{
-				"name": "Address",
-				"type": "varchar"
-			},
-			{
-				"name": "Department",
-				"type": "int",
-				"precision": 10
-			}
-		],
+		"schema": [],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "employee"
+			"table": {
+				"value": "@dataset().TableName",
+				"type": "Expression"
+			}
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
