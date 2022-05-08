@@ -24,6 +24,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -75,7 +76,6 @@
 								},
 								"sink": {
 									"type": "AzureSqlSink",
-									"preCopyScript": "drop table Department\ndrop table Employee",
 									"tableOption": "autoCreate",
 									"disableMetricsCollection": false
 								},
@@ -140,7 +140,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@SELECT \n'pipeline().DataFactory' AS DataFactory Name,\n'pipeline().Pipeline' AS Pipeline Name,\n'pipeline()?.TriggeredByPipelineRunId' AS RunId,\n'activity('Copy data1').output.value' AS FileName,\n'activity('Copy data1').output[0].Error.Message' AS ErrorMessage\n'utcnow()' AS LogDate",
+							"value": "SELECT \n'@{pipeline().DataFactory}' AS DataFactory Name,\n'@{pipeline().Pipeline}' AS Pipeline Name,\n'@{pipeline().RunId}' AS RunId,\n'@{activity('Copy data1').output.value}' AS FileName,\n'@{activity('Copy data1').output[0].Error.Message}' AS ErrorMessage",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -197,7 +197,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "@SELECT \n'pipeline().DataFactory' AS DataFactory Name,\n'pipeline().Pipeline' AS Pipeline Name,\n'pipeline()?.TriggeredByPipelineRunId' AS RunId,\n'activity('Copy data1').output.value' AS FileName\n'utcnow()' AS LogDate",
+							"value": "SELECT \n'@{pipeline().DataFactory}' AS DataFactory Name,\n'@{pipeline().Pipeline}' AS Pipeline Name,\n'@{pipeline().RunId}' AS RunId,\n'@{activity('Copy data1').output.value}' AS FileName,\n'Success' AS ErrorMessage",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
