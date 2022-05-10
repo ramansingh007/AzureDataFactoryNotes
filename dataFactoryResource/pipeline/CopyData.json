@@ -44,13 +44,19 @@
 				"inputs": [
 					{
 						"referenceName": "sourceFile",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "employee.csv"
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "AzureSql_destination",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"TableName": "dbo.employee"
+						}
 					}
 				]
 			}
