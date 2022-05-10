@@ -1,0 +1,32 @@
+{
+	"name": "SalesDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "sourceMetaData",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "BadSales.csv",
+				"container": "data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "SaleDate",
+				"type": "String"
+			},
+			{
+				"name": "Quantity",
+				"type": "String"
+			}
+		]
+	}
+}
