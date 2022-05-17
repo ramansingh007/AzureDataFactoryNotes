@@ -15,6 +15,14 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabaseForLogging'"
 		},
+		"Copydata_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'Copydata'"
+		},
+		"copy data_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'copy data'"
+		},
 		"sourceMetaData_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'sourceMetaData'"
@@ -23,7 +31,15 @@
 			"type": "string",
 			"defaultValue": "https://Prabjyot.vault.azure.net/"
 		},
+		"Copydata_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://prabjyotstorage.dfs.core.windows.net"
+		},
 		"SourceDatasets_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://prabjyotstorage.dfs.core.windows.net"
+		},
+		"copy data_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://prabjyotstorage.dfs.core.windows.net"
 		}
@@ -106,6 +122,83 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/sourceFile')]",
+				"[concat(variables('factoryId'), '/datasets/AzureSql_destination')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@concat('Select * from fn_getDetails (',pipeline().parameters.empId,')')",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"tableOption": "autoCreate",
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AzSqlSP",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "AzureSql_destination",
+								"type": "DatasetReference",
+								"parameters": {
+									"TableName": "Raman"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"empId": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/AzSqlSP')]",
 				"[concat(variables('factoryId'), '/datasets/AzureSql_destination')]"
 			]
 		},
@@ -601,6 +694,23 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Copydata')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('Copydata_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('Copydata_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SourceDatasets')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -622,6 +732,23 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureKeyVault')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/copy data')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('copy data_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('copy data_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/sourceMetaData')]",

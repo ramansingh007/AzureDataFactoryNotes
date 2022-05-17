@@ -11,13 +11,25 @@
 		"AzureSqlDatabaseForLogging_connectionString": {
 			"value": ""
 		},
+		"Copydata_accountKey": {
+			"value": ""
+		},
+		"copy data_accountKey": {
+			"value": ""
+		},
 		"sourceMetaData_connectionString": {
 			"value": ""
 		},
 		"AzureKeyVault_properties_typeProperties_baseUrl": {
 			"value": "https://Prabjyot.vault.azure.net/"
 		},
+		"Copydata_properties_typeProperties_url": {
+			"value": "https://prabjyotstorage.dfs.core.windows.net"
+		},
 		"SourceDatasets_properties_typeProperties_url": {
+			"value": "https://prabjyotstorage.dfs.core.windows.net"
+		},
+		"copy data_properties_typeProperties_url": {
 			"value": "https://prabjyotstorage.dfs.core.windows.net"
 		},
 		"containerUri": {
